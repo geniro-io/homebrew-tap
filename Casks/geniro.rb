@@ -1,6 +1,6 @@
 cask "geniro" do
-  version "1.4.1"
-  sha256 "fd4f342478dbdd6fca6941c3d4ba0d23da773970a8efdf70e8980abf82a9d44b"
+  version "1.4.2"
+  sha256 "6030c86728fe321d2074329d05370f9d53828de149d9387b45a197ac2fbf666d"
 
   url "https://github.com/geniro-io/geniro-app/releases/download/v#{version}/Geniro-#{version}-arm64-mac.zip"
   name "Geniro"
@@ -12,12 +12,9 @@ cask "geniro" do
 
   app "Geniro.app"
 
-  # The build is ad-hoc signed (no Apple Developer ID / notarization). Modern
-  # Homebrew (6.x) always applies com.apple.quarantine to a cask artifact and no
-  # longer offers `--no-quarantine`, so a quarantined ad-hoc app cannot spawn its
-  # bundled daemon subprocess (Gatekeeper blocks the child) and hangs on launch.
-  # Strip the quarantine bit after install so the app runs. (The proper fix is a
-  # Developer ID signature + notarization; until then this is the ad-hoc path.)
+  # Ad-hoc build: strip com.apple.quarantine so the app can spawn its
+  # bundled daemon instead of being Gatekeeper-blocked (Homebrew 6.x
+  # always quarantines and dropped --no-quarantine).
   postflight do
     system_command "/usr/bin/xattr",
                    args: ["-dr", "com.apple.quarantine", "#{appdir}/Geniro.app"]
