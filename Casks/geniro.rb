@@ -1,6 +1,6 @@
 cask "geniro" do
-  version "1.44.0"
-  sha256 "dde0c2251e023b74d2c1de4e4d603e3c017360fa4c005e19f9c989b414938425"
+  version "1.45.0"
+  sha256 "dc71a5b5a1ba0fc189926278decd701a306b13d1c9176ed30c105a3dceb8e746"
 
   url "https://github.com/geniro-io/geniro-app/releases/download/v#{version}/Geniro-#{version}-arm64-mac.zip"
   name "Geniro"
@@ -8,7 +8,20 @@ cask "geniro" do
   homepage "https://github.com/geniro-io/geniro-app"
 
   depends_on arch: :arm64
-  depends_on macos: ">= :sonoma"
+  # A bare symbol, not ">= :sonoma": Homebrew deprecated the string
+  # comparison form and the bare symbol already means "this version or
+  # newer", so the requirement is unchanged. Observed live on
+  # 2026-08-17 — every `brew` command touching this cask printed
+  # "Calling string comparison format for `depends_on macos:` is
+  # deprecated", loudly enough to bury the output of `brew outdated`.
+  depends_on macos: :sonoma
+
+  # The app replaces its own bundle in place, so the version on disk
+  # can be ahead of the cask's. Without this, `brew upgrade` would
+  # keep reinstalling over a self-updated app and report it outdated
+  # forever; with it, brew leaves an app that updates itself alone
+  # (`--greedy` still forces the reinstall).
+  auto_updates true
 
   app "Geniro.app"
 
