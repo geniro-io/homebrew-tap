@@ -1,6 +1,6 @@
 cask "geniro" do
-  version "1.53.0"
-  sha256 "b305673c7c899644e191588dc6a1032f3eda81702fd91ad6457abdb641138f16"
+  version "1.53.1"
+  sha256 "f029d9ae64c80f1dfb83f1c9356fde5af703e6eb5091cb7d153194cbfed44bd6"
 
   url "https://github.com/geniro-io/geniro-app/releases/download/v#{version}/Geniro-#{version}-arm64-mac.zip"
   name "Geniro"
